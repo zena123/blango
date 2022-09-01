@@ -1,3 +1,7 @@
+from django.conf import settings
+print(f"Time zone: {settings.TIME_ZONE}")
+
+
 """blango URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
