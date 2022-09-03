@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.generic import TemplateView, DetailView
@@ -6,12 +7,17 @@ from django.urls import reverse
 from .models import Post
 from .forms import CommentForm
 
+logger = logging.getLogger(__name__)
+
+
 class IndexTemplateView(TemplateView):
   template_name = 'blog/index.html'
 
   def get_context_data(self, **kwargs):
      ctx = super(IndexTemplateView, self).get_context_data(**kwargs)
-     ctx['posts'] = Post.objects.filter(published_at__lte=timezone.now())
+     posts = Post.objects.filter(published_at__lte=timezone.now())
+     ctx['posts'] = posts
+     logger.debug("Got %d posts", len(posts))
      return ctx
 
 def post_detail(request, slug):
@@ -25,6 +31,7 @@ def post_detail(request, slug):
         comment.content_object = post
         comment.creator = request.user
         comment.save()
+        logger.info("Created comment on Post %d for user %s", post.pk, request.user)
         return redirect(request.path_info)
     else:
         comment_form = CommentForm()
