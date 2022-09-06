@@ -1,3 +1,5 @@
+# from django.views.decorators.cache import cache_page
+# from django.views.decorators.vary import vary_on_cookie
 import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -9,9 +11,20 @@ from .forms import CommentForm
 
 logger = logging.getLogger(__name__)
 
+# @cache_page(300)
+# @vary_on_cookie
+def index(request):
+  # from django.http import HttpResponse
+  # logger.debug("Index function is called!")
+  # return HttpResponse(str(request.user).encode("ascii"))
+  posts = Post.objects.filter(published_at__lte=timezone.now())
+  return render(request, "blog/index.html", {"posts": posts})
+
 
 class IndexTemplateView(TemplateView):
   template_name = 'blog/index.html'
+  from django.http import HttpResponse
+  
 
   def get_context_data(self, **kwargs):
      ctx = super(IndexTemplateView, self).get_context_data(**kwargs)
@@ -31,14 +44,13 @@ def post_detail(request, slug):
         comment.content_object = post
         comment.creator = request.user
         comment.save()
-        logger.info("Created comment on Post %d for user %s", post.pk, request.user)
+        logger.info("Created commentfor user %s", request.user)
         return redirect(request.path_info)
     else:
         comment_form = CommentForm()
   else:
       comment_form = None
-      return render(
-        request, "blog/blog_detail.html", {"post": post, "comment_form": comment_form})
+  return render(request, "blog/blog_detail.html", {"post": post, "comment_form": comment_form})
 
 
 # use generic CBV better
