@@ -17,7 +17,7 @@ def index(request):
   # from django.http import HttpResponse
   # logger.debug("Index function is called!")
   # return HttpResponse(str(request.user).encode("ascii"))
-  posts = Post.objects.filter(published_at__lte=timezone.now())
+  posts = Post.objects.filter(published_at__lte=timezone.now()).select_related("author")
   return render(request, "blog/index.html", {"posts": posts})
 
 
@@ -61,4 +61,7 @@ def post_detail(request, slug):
 #   template_name = 'blog/blog_detail.html'
 #   queryset = Post.objects.all()
 
-  
+
+def get_ip(request):
+  from django.http import HttpResponse
+  return HttpResponse(request.META['REMOTE_ADDR'])

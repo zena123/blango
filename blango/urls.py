@@ -1,5 +1,6 @@
+import debug_toolbar
 from django.conf import settings
-print(f"Time zone: {settings.TIME_ZONE}")
+# print(f"Time zone: {settings.TIME_ZONE}")
 
 
 """blango URL Configuration
@@ -18,8 +19,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from blog.views import IndexTemplateView, post_detail, index
+from django.urls import path, include
+from blog.views import IndexTemplateView, post_detail, index, get_ip
 
 # it's better to make separate urls file for each app 
 urlpatterns = [
@@ -27,4 +28,10 @@ urlpatterns = [
     # path("", IndexTemplateView.as_view(), name="index"),
     path("", index, name="index"),
     path('post/<str:slug>/', post_detail, name="blog-post-detail"),
+    path("ip/", get_ip),
 ]
+if settings.DEBUG:
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]
+
