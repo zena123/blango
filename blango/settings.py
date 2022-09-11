@@ -34,6 +34,7 @@ class Dev(Configuration):
   DEBUG = values.BooleanValue(True)
 
   ALLOWED_HOSTS = ['*']
+  AUTH_USER_MODEL = "blango_auth.User"
 
 
   # Application definition
@@ -46,6 +47,7 @@ class Dev(Configuration):
       'django.contrib.messages',
       'django.contrib.staticfiles',
       'blog',
+      'blango_auth',
       'crispy_forms',
       'crispy_bootstrap5',
       'debug_toolbar',
