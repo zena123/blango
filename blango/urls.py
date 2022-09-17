@@ -42,6 +42,7 @@ urlpatterns = [
     path("accounts/profile/", blango_auth.views.profile, name="profile"),
     path('post/<str:slug>/', post_detail, name="blog-post-detail"),
     path("ip/", get_ip),
+    path("api/v1/", include("blog.api_urls")),
 ]
 if settings.DEBUG:
     urlpatterns += [
