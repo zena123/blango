@@ -53,6 +53,7 @@ class Dev(Configuration):
       'crispy_forms',
       'crispy_bootstrap5',
       'debug_toolbar',
+      'drf_yasg',
   ]
 
   MIDDLEWARE = [
@@ -115,6 +116,13 @@ class Dev(Configuration):
           'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
       },
   ]
+  SWAGGER_SETTINGS = {
+        "SECURITY_DEFINITIONS": {
+            "Token": {"type": "apiKey", "name": "Authorization", "in": "header"},
+            "Basic": {"type": "basic"},
+        }
+    }
+
   LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -163,9 +171,7 @@ class Dev(Configuration):
         "rest_framework.permissions.IsAuthenticatedOrReadOnly"
     ]
 }
-
   
-
 
   # Internationalization
   # https://docs.djangoproject.com/en/3.2/topics/i18n/
