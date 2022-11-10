@@ -2,6 +2,7 @@ import debug_toolbar
 from django.conf import settings
 from django.conf.urls.static import static
 import blango_auth.views
+from blog.views import post_table
 
 # print(f"Time zone: {settings.TIME_ZONE}")
 
@@ -42,8 +43,11 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/profile/", blango_auth.views.profile, name="profile"),
     path('post/<str:slug>/', post_detail, name="blog-post-detail"),
+    path("post-table/",post_table, name="blog-post-table"),
     path("ip/", get_ip),
-    path("api/v1/", include("blog.api.urls"))
+    path("api/v1/", include("blog.api.urls")),
+    
+
 ]
 if settings.DEBUG:
     urlpatterns += [
